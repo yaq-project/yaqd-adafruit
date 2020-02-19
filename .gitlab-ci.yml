@@ -30,11 +30,11 @@ before_script:
   - source venv/bin/activate
   - pip install -U twine
   - pip install -U mypy
+  - pip install -U yaqd_core
     
 mypy:
   stage: test
   script:
-    - pip install -U dist/*.whl
     - mypy yaqd_adafruit
 
 run:
