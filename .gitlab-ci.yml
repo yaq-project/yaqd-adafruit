@@ -29,16 +29,12 @@ before_script:
   - virtualenv venv
   - source venv/bin/activate
   - pip install -U twine
-  - pip install -U pytest mypy
+  - pip install -U mypy
     
 mypy:
   stage: test
   script:
     - mypy yaqd_adafruit
-pytest:
-  stage: test
-  script:
-    - pytest
 
 run:
   stage: build
