@@ -34,6 +34,7 @@ before_script:
 mypy:
   stage: test
   script:
+    - pip install -U dist/*.whl
     - mypy yaqd_adafruit
 
 run:
