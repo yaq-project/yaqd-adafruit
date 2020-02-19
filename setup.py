@@ -15,14 +15,16 @@ with open("README.md") as readme_file:
     readme = readme_file.read()
 
 
-requirements = ["yaqd-core"]
+requirements = ["yaqd-core", "adafruit-circuitpython-motorkit"]
 
 extra_requirements = {"dev": ["black", "pre-commit"]}
 
-setup_requirements = ["pytest-runner",
+setup_requirements = [
+    "pytest-runner",
 ]
 
-test_requirements = ["pytest>=3",
+test_requirements = [
+    "pytest>=3",
 ]
 extra_files = {"yaqd_adafruit": ["VERSION"]}
 
