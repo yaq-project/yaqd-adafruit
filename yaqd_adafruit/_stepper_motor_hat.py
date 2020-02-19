@@ -3,9 +3,9 @@ __all__ = ["StepperMotorHat"]
 import asyncio
 from typing import Dict, Any
 
-from adafruit_motorkit import MotorKit
-from adafruit_motor import stepper
-import yaqc
+from adafruit_motorkit import MotorKit  # type: ignore
+from adafruit_motor import stepper  # type: ignore
+import yaqc  # type: ignore
 from yaqd_core import ContinuousHardware, logging
 
 logger = logging.getLogger(__name__)
