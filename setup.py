@@ -19,13 +19,6 @@ requirements = ["yaqd-core", "yaqc", "adafruit-circuitpython-motorkit"]
 
 extra_requirements = {"dev": ["black", "pre-commit"]}
 
-setup_requirements = [
-    "pytest-runner",
-]
-
-test_requirements = [
-    "pytest>=3",
-]
 extra_files = {"yaqd_adafruit": ["VERSION"]}
 
 setup(
@@ -58,9 +51,6 @@ setup(
     keywords="yaqd-adafruit",
     name="yaqd-adafruit",
     packages=find_packages(include=["yaqd-adafruit", "yaqd-adafruit.*"]),
-    setup_requires=setup_requirements,
-    test_suite="tests",
-    tests_require=test_requirements,
     url="https://gitlab.com/yaq/yaqd-adafruit",
     version=version,
     zip_safe=False,
