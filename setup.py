@@ -38,7 +38,7 @@ setup(
     description="Daemons for Adafruit products",
     entry_points={
         "console_scripts": [
-            "yaqd-stepper-motor-hat=yaqd_adafruit._stepper_motor_hat:StepperMotorHat.main",
+            "yaqd-stepper-motor-hat=yaqd_adafruit._adafruit_stepper_motor_hat:AdafruitStepperMotorHat.main",
         ],
     },
     install_requires=requirements,

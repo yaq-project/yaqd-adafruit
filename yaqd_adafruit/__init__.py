@@ -1,2 +1,2 @@
 from .__version__ import *
-from ._stepper_motor_hat import *
+from ._adafruit_stepper_motor_hat import *
