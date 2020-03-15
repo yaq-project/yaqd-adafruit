@@ -50,7 +50,7 @@ setup(
     package_data=extra_files,
     keywords="yaqd-adafruit",
     name="yaqd-adafruit",
-    packages=find_packages(include=["yaqd-adafruit", "yaqd-adafruit.*"]),
+    packages=find_packages(include=["yaqd_adafruit", "yaqd_adafruit.*"]),
     url="https://gitlab.com/yaq/yaqd-adafruit",
     version=version,
     zip_safe=False,
