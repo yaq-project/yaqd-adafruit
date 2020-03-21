@@ -14,6 +14,7 @@ logger.setLevel(logging.INFO)
 
 class AdafruitStepperMotorHat(ContinuousHardware):
     _kind = "adafruit_stepper-motor-hat"
+    traits = ["is-homeable", "uses-i2c", "uses-serial"]
     defaults: Dict[str, Any] = {
         "stepper_index": 1,
         "i2c_addr": 0x60,
