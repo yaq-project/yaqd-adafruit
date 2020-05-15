@@ -8,9 +8,6 @@ from adafruit_motor import stepper  # type: ignore
 import yaqc  # type: ignore
 from yaqd_core import ContinuousHardware, logging
 
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.INFO)
-
 
 class AdafruitStepperMotorHat(ContinuousHardware):
     _kind = "adafruit_stepper-motor-hat"
