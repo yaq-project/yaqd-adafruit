@@ -8,9 +8,12 @@ from adafruit_motor import stepper  # type: ignore
 import yaqc  # type: ignore
 from yaqd_core import ContinuousHardware, logging
 
+from .__version__ import __branch__
+
 
 class AdafruitStepperMotorHat(ContinuousHardware):
     _kind = "adafruit_stepper-motor-hat"
+    _version = "0.1.0" + f"+{__branch__}" if __branch__ else ""
     traits = ["is-homeable", "uses-i2c", "uses-serial"]
     defaults: Dict[str, Any] = {
         "stepper_index": 1,
