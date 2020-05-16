@@ -1,9 +1,8 @@
-__all__ = ["StepperMotorHat"]
+__all__ = ["AdafruitStepperMotorHat"]
 
 import asyncio
 from typing import Dict, Any
 
-from adafruit_motorkit import MotorKit  # type: ignore
 from adafruit_motor import stepper  # type: ignore
 import yaqc  # type: ignore
 from yaqd_core import ContinuousHardware, logging
@@ -24,6 +23,8 @@ class AdafruitStepperMotorHat(ContinuousHardware):
     }
 
     def __init__(self, name, config, config_filepath):
+        from adafruit_motorkit import MotorKit  # type: ignore
+
         super().__init__(name, config, config_filepath)
         self.kit = MotorKit(address=config["i2c_addr"], steppers_microsteps=config["microsteps"])
         self.stepper = getattr(self.kit, f"stepper{config['stepper_index']}")
