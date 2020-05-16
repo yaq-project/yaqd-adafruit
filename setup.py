@@ -15,7 +15,7 @@ with open("README.md") as readme_file:
     readme = readme_file.read()
 
 
-requirements = ["yaqd-core", "yaqc", "adafruit-circuitpython-motorkit"]
+requirements = ["yaqd-core>2020.05.1", "yaqc", "adafruit-circuitpython-motorkit"]
 
 extra_requirements = {"dev": ["black", "pre-commit"]}
 
