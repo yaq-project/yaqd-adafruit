@@ -1,13 +1,14 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v3.4.0
+    rev: v4.0.1
     hooks:
     -   id: trailing-whitespace
+    -   id: check-toml
     -   id: no-commit-to-branch
         args: [-b, master]
 
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 21.5b1
     hooks:
       - id: black
         name: black
@@ -22,7 +23,7 @@ repos:
         exclude: ^docs/conf.py
 
   - repo: https://gitlab.com/yaq/yaq-traits
-    rev: v2021.3.0
+    rev: v2021.4.0
     hooks:
       - id: yaq-traits-check
       - id: yaq-traits-compose

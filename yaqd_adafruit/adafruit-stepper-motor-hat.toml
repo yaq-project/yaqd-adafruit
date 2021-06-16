@@ -1,0 +1,36 @@
+protocol = "adafruit-stepper-motor-hat"
+doc = ""
+traits = ["uses-i2c", "uses-serial", "has-limits", "has-position", "is-homeable", "is-daemon"]
+
+[links]
+source = "https://gitlab.com/yaq/yaqd-adafruit"
+bugtracker = "https://gitlab.com/yaq/yaqd-adafruit/-/issues"
+
+[installation]
+PyPI = "https://pypi.org/project/yaqd-adafruit/"
+
+[[types]]
+name = "limit_switch"
+type = "record"
+fields = [{"name"="port", "type"="int", "doc"="TCP port"},
+          {"name"="channel", "type"="string", "doc"="channel key"},
+	  {"name"="invert", "type"="boolean", "default"=false}]
+
+[config]
+
+[config.i2c_addr]
+default = 0x60
+
+[config.lower_limit_switch]
+type = "limit_switch"
+
+[config.microsteps]
+type = "int"
+default = 16
+
+[config.stepper_index]
+type = "int"
+
+[config.upper_limit_port]
+type = ["limit_switch", "null"]
+default = "__null__"
