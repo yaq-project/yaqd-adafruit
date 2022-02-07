@@ -99,11 +99,19 @@
         "stepper_index": {
             "type": "int"
         },
+        "steps_per_unit": {
+            "default": 0.5555555555556,
+            "type": "double"
+        },
+        "units": {
+            "default": "deg",
+            "type": "string"
+        },
         "upper_limit_port": {
             "default": null,
             "type": [
-                "limit_switch",
-                "null"
+                "null",
+                "limit_switch"
             ]
         }
     },
@@ -273,7 +281,7 @@
     "requires": [],
     "state": {
         "destination": {
-            "default": NaN,
+            "default": 0,
             "origin": "has-position",
             "type": "double"
         },
@@ -287,7 +295,7 @@
             "type": "array"
         },
         "position": {
-            "default": NaN,
+            "default": 0,
             "origin": "has-position",
             "type": "double"
         }
@@ -304,14 +312,9 @@
         {
             "fields": [
                 {
-                    "doc": "TCP port",
-                    "name": "port",
+                    "doc": "GPIO Pin",
+                    "name": "pin",
                     "type": "int"
-                },
-                {
-                    "doc": "channel key",
-                    "name": "channel",
-                    "type": "string"
                 },
                 {
                     "default": false,

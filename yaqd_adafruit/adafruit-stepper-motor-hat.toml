@@ -12,14 +12,21 @@ PyPI = "https://pypi.org/project/yaqd-adafruit/"
 [[types]]
 name = "limit_switch"
 type = "record"
-fields = [{"name"="port", "type"="int", "doc"="TCP port"},
-          {"name"="channel", "type"="string", "doc"="channel key"},
+fields = [{"name"="pin", "type"="int", "doc"="GPIO Pin"},
 	  {"name"="invert", "type"="boolean", "default"=false}]
 
 [config]
 
 [config.i2c_addr]
 default = 0x60
+
+[config.steps_per_unit]
+type = "double"
+default = 0.5555555555556
+
+[config.units]
+type = "string"
+default = "deg"
 
 [config.lower_limit_switch]
 type = "limit_switch"
@@ -32,5 +39,11 @@ default = 16
 type = "int"
 
 [config.upper_limit_port]
-type = ["limit_switch", "null"]
+type = ["null", "limit_switch"]
 default = "__null__"
+
+[state]
+[state.position]
+default = 0
+[state.destination]
+default=0
