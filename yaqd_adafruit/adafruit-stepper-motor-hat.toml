@@ -34,6 +34,12 @@ type = "limit_switch"
 [config.microsteps]
 type = "int"
 default = 16
+doc = "Number of microsteps to use, 1 for full steps. Must be a power of two."
+
+[config.step_rate_limit]
+type="double"
+default = 0
+doc = "Time (in s) to explicitly wait between successive steps."
 
 [config.stepper_index]
 type = "int"
