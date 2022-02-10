@@ -116,6 +116,10 @@
         }
     },
     "doc": "",
+    "hardware": [
+        "adafruit:2348",
+        "raspberry-pi:4b"
+    ],
     "installation": {
         "PyPI": "https://pypi.org/project/yaqd-adafruit/"
     },
