@@ -1,6 +1,7 @@
 protocol = "adafruit-stepper-motor-hat"
 doc = ""
 traits = ["uses-i2c", "uses-serial", "has-limits", "has-position", "is-homeable", "is-daemon"]
+hardware = ["adafruit:2348", "raspberry-pi:4b"]
 
 [links]
 source = "https://gitlab.com/yaq/yaqd-adafruit"
