@@ -60,6 +60,7 @@
         },
         "microsteps": {
             "default": 16,
+            "doc": "Number of microsteps to use, 1 for full steps. Must be a power of two.",
             "type": "int"
         },
         "model": {
@@ -95,6 +96,11 @@
                 "null",
                 "string"
             ]
+        },
+        "step_rate_limit": {
+            "default": 0,
+            "doc": "Time (in s) to explicitly wait between successive steps.",
+            "type": "double"
         },
         "stepper_index": {
             "type": "int"
