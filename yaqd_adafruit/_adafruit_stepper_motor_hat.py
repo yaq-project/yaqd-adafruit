@@ -18,7 +18,6 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         self.steps_per_unit = config["steps_per_unit"]
         self._units = config["units"]
         self.microsteps = config["microsteps"]
-        self.step_rate_limit = config["step_rate_limit"]
         self._lock = asyncio.Lock()
         self._lower_pin = gpiozero.InputDevice(config["lower_limit_switch"]["pin"], pull_up=True)
         if config.get("upper_limit_switch"):
@@ -35,10 +34,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
             return
         elif direction == stepper.FORWARD and await self._get_upper_limit_switch():
             return
-        if self.microsteps > 1:
-            self._stepper.onestep(direction=direction, style=stepper.MICROSTEP)
-        else:
-            self._stepper.onestep(direction=direction, style=stepper.SINGLE)
+        self._stepper.onestep(direction=direction, style=stepper.MICROSTEP)
         steps += 1 if direction == stepper.FORWARD else -1
         self._state["position"] = self.to_units(steps)
         self.logger.debug(f"{self._state['position']}")
@@ -68,7 +64,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         async with self._lock:
             self._busy = True
             while True:
-                await asyncio.sleep(self.step_rate_limit)
+                await asyncio.sleep(0)
                 await self._do_step(backward=True)
                 if self._state["position"] == prev_position:
                     break
@@ -87,7 +83,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
                     self._state["destination"]
                 ):
                     self._busy = True
-                    await asyncio.sleep(self.step_rate_limit)
+                    await asyncio.sleep(0)
                     await self._do_step(
                         self.to_steps(self._state["position"])
                         > self.to_steps(self._state["destination"])
