@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+## [2022.6.0]
+
+### Changed
+- migrated to Github
+
 ### Fixed
 - document known hardware
 
@@ -13,5 +18,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/).
 ### Added
 - initial release
 
-[Unreleased]: https://gitlab.com/yaq/yaqd-adafruit/-/compare/v2022.2.0...main
-[2022.2.0]: https://gitlab.com/yaq/yaqd-adafruit/-/tags/v2022.2.0
+[Unreleased]: https://github.com/yaq-project/yaqd-adafruit/compare/v2022.6.0...main
+[2022.6.0]: https://github.com/yaq-project/yaqd-adafruit/compare/v2022.2.0...v2022.6.0
+[2022.2.0]: https://github.com/yaq-project/yaqd-adafruit/releases/tag/v2022.2.0
