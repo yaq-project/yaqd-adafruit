@@ -10,3 +10,7 @@ yaq daemons for Adafruit products
 
 This package contains the following daemon(s):
 - [adafruit-stepper-motor-hat](https://yaq.fyi/daemons/adafruit-stepper-motor-hat/)
+
+## maintainers
+
+[Dan Kohler](https://github.com/ddkohler)
