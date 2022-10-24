@@ -1,6 +1,6 @@
 protocol = "adafruit-stepper-motor-hat"
 doc = ""
-traits = ["uses-i2c", "uses-serial", "has-limits", "has-position", "is-homeable", "is-daemon"]
+traits = ["uses-i2c", "uses-serial", "has-transformed-position", "has-limits", "has-position", "is-homeable", "is-daemon"]
 hardware = ["adafruit:2348", "raspberry-pi:4b"]
 
 [links]
