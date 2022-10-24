@@ -2,10 +2,20 @@ import asyncio
 from typing import Dict, Any
 
 import gpiozero  # type: ignore
-from yaqd_core import UsesI2C, UsesSerial, HasTransformedPosition, HasLimits, HasPosition, IsHomeable, IsDaemon
+from yaqd_core import (
+    UsesI2C,
+    UsesSerial,
+    HasTransformedPosition,
+    HasLimits,
+    HasPosition,
+    IsHomeable,
+    IsDaemon,
+)
 
 
-class AdafruitStepperMotorHat(UsesI2C, UsesSerial, HasTransformedPosition, IsHomeable, HasLimits, HasPosition, IsDaemon):
+class AdafruitStepperMotorHat(
+    UsesI2C, UsesSerial, HasTransformedPosition, IsHomeable, HasLimits, HasPosition, IsDaemon
+):
     _kind = "adafruit-stepper-motor-hat"
 
     def __init__(self, name, config, config_filepath):
