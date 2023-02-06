@@ -60,7 +60,11 @@
         },
         "microsteps": {
             "default": 16,
-            "type": "int"
+            "doc": "Number of microsteps between full steps. Must be at least 2 and even. Default is 16.  Use '__null__' for no microstepping.",
+            "type": [
+                "null",
+                "int"
+            ]
         },
         "model": {
             "default": null,
