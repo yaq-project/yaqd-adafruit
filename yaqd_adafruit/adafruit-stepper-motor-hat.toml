@@ -33,7 +33,8 @@ default = "deg"
 type = "limit_switch"
 
 [config.microsteps]
-type = "int"
+type = ["null", "int"]
+doc = "Number of microsteps between full steps. Must be at least 2 and even. Default is 16.  Use '__null__' for no microstepping."
 default = 16
 
 [config.stepper_index]
