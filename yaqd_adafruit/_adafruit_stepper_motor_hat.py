@@ -18,7 +18,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         self.style = stepper.MICROSTEP if self.microsteps > 1 else stepper.SINGLE
         self._kit = MotorKit(
             address=config["i2c_addr"],
-            steppers_microsteps=self.microsteps if self.microsteps > 1 else None
+            steppers_microsteps=self.microsteps if self.microsteps > 1 else None,
         )
         self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
         self.steps_per_unit = config["steps_per_unit"]
