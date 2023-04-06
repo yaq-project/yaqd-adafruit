@@ -31,7 +31,6 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
             )
 
     async def _do_step(self, backward=False):
-
         steps = self.to_steps(self._state["position"])
         direction = stepper.BACKWARD if backward else stepper.FORWARD
         if direction == stepper.BACKWARD and await self._get_lower_limit_switch():
