@@ -15,7 +15,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
 
         super().__init__(name, config, config_filepath)
         self.microsteps = config["microsteps"]
-        self.style = stepper.MICROSTEP if self.microsteps > 1 else stepper.SINGLE
+        self.style = stepper.MICROSTEP if self.microsteps > 1 else stepper.DOUBLE
         self._kit = MotorKit(
             address=config["i2c_addr"],
             steppers_microsteps=self.microsteps if self.microsteps > 1 else None,
