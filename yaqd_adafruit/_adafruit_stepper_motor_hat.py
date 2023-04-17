@@ -14,21 +14,25 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         from adafruit_motorkit import MotorKit  # type: ignore
 
         super().__init__(name, config, config_filepath)
-        self.microsteps = config["microsteps"]
-        self.style = stepper.MICROSTEP if self.microsteps > 1 else stepper.DOUBLE
-        self._kit = MotorKit(
-            address=config["i2c_addr"],
-            steppers_microsteps=self.microsteps if self.microsteps > 1 else None,
-        )
-        self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
-        self.steps_per_unit = config["steps_per_unit"]
-        self._units = config["units"]
-        self._lock = asyncio.Lock()
-        self._lower_pin = gpiozero.InputDevice(config["lower_limit_switch"]["pin"], pull_up=True)
-        if config.get("upper_limit_switch"):
-            self._upper_pin = gpiozero.InputDevice(
-                config["upper_limit_switch"]["pin"], pull_up=True
+        try:
+            self.microsteps = config["microsteps"]
+            self.style = stepper.MICROSTEP if self.microsteps > 1 else stepper.DOUBLE
+            self._kit = MotorKit(
+                address=config["i2c_addr"],
+                steppers_microsteps=self.microsteps if self.microsteps > 1 else None,
             )
+            self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
+            self.steps_per_unit = config["steps_per_unit"]
+            self._units = config["units"]
+            self._lock = asyncio.Lock()
+            self._lower_pin = gpiozero.InputDevice(config["lower_limit_switch"]["pin"], pull_up=True)
+            if config.get("upper_limit_switch"):
+                self._upper_pin = gpiozero.InputDevice(
+                    config["upper_limit_switch"]["pin"], pull_up=True
+                )
+        self.logger.info(self._stepper)
+        except Exception as e:
+            self.logger.error(e)
 
     async def _do_step(self, backward=False):
         steps = self.to_steps(self._state["position"])
@@ -47,6 +51,10 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
 
     def to_steps(self, units):
         return round(units * self.steps_per_unit * self.microsteps)
+
+    def release(self):
+        """ for debugging purposes only """
+        self._stepper.release()
 
     async def _get_lower_limit_switch(self):
         # TODO: invert

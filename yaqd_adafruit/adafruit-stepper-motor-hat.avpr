@@ -223,6 +223,11 @@
             ],
             "response": "boolean"
         },
+        "release": {
+            "doc": "de-energize coils",
+            "request": [],
+            "response": "null"
+        },
         "set_position": {
             "doc": "Give the daemon a new destination, and begin motion towards that destination.",
             "origin": "has-position",
