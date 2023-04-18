@@ -16,12 +16,17 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         super().__init__(name, config, config_filepath)
         try:
             self.microsteps = config["microsteps"]
-            self.style = stepper.MICROSTEP if self.microsteps > 1 else stepper.DOUBLE
+            self.style = config["style"]
+            if self.style in ["DOUBLE", "SINGLE"]:  # full steps only
+                self.step_size = self.microsteps
+            elif self.style == "INTERLEAVE":  # half stepping
+                self.step_size = self.microsteps // 2
+            elif self.style == "MICROSTEPS":  # microstepping
+                self.step_size = 1
             self._kit = MotorKit(
                 address=config["i2c_addr"],
-                steppers_microsteps=self.microsteps if self.microsteps > 1 else None,
+                steppers_microsteps=self.microsteps,
             )
-            self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
             self.steps_per_unit = config["steps_per_unit"]
             self._units = config["units"]
             self._lock = asyncio.Lock()
@@ -30,26 +35,28 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
                 self._upper_pin = gpiozero.InputDevice(
                     config["upper_limit_switch"]["pin"], pull_up=True
                 )
-        self.logger.info(self._stepper)
         except Exception as e:
             self.logger.error(e)
 
     async def _do_step(self, backward=False):
-        steps = self.to_steps(self._state["position"])
+        steps = self.to_usteps(self._state["position"])
         direction = stepper.BACKWARD if backward else stepper.FORWARD
         if direction == stepper.BACKWARD and await self._get_lower_limit_switch():
             return
         elif direction == stepper.FORWARD and await self._get_upper_limit_switch():
             return
-        self._stepper.onestep(direction=direction, style=self.style)
-        steps += 1 if direction == stepper.FORWARD else -1
+        try:
+            self._stepper.onestep(direction=direction, style=self.style)
+        except Exception as e:
+            self.logger.error(e)
+        steps += self.step_size if direction == stepper.FORWARD else -self.step_size
         self._state["position"] = self.to_units(steps)
         self.logger.debug(f"{self._state['position']}")
 
     def to_units(self, usteps):
         return usteps / self.steps_per_unit / self.microsteps
 
-    def to_steps(self, units):
+    def to_usteps(self, units):
         return round(units * self.steps_per_unit * self.microsteps)
 
     def release(self):
@@ -90,14 +97,14 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
     async def update_state(self):
         while True:
             async with self._lock:
-                while self.to_steps(self._state["position"]) != self.to_steps(
+                while self.to_usteps(self._state["position"]) != self.to_usteps(
                     self._state["destination"]
                 ):
                     self._busy = True
                     await asyncio.sleep(0)
                     await self._do_step(
-                        self.to_steps(self._state["position"])
-                        > self.to_steps(self._state["destination"])
+                        self.to_usteps(self._state["position"])
+                        > self.to_usteps(self._state["destination"])
                     )
 
                 self._busy = False

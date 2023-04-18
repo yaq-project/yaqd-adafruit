@@ -16,6 +16,11 @@ type = "record"
 fields = [{"name"="pin", "type"="int", "doc"="GPIO Pin"},
 	  {"name"="invert", "type"="boolean", "default"=false}]
 
+[[types]]
+name = "step_style"
+type = "enum"
+symbols = ["DOUBLE", "SINGLE", "INTERLEAVE", "MICROSTEPS"]
+
 [config]
 
 [config.i2c_addr]
@@ -34,8 +39,13 @@ type = "limit_switch"
 
 [config.microsteps]
 type = "int"
-doc = "Number of microsteps between full steps. Use value 1 for no microsteps. Default is 16."
+doc = "Number of microsteps between full steps. Default is 16."
 default = 16
+
+[config.style]
+type = "step_style"
+doc = "Style of step to take. Default is 'DOUBLE'."
+default = "DOUBLE"
 
 [config.stepper_index]
 type = "int"
