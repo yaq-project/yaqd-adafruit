@@ -6,6 +6,14 @@ from yaqd_core import UsesI2C, UsesSerial, HasLimits, HasPosition, IsHomeable, I
 from adafruit_motor import stepper  # type: ignore
 
 
+styles = {
+    "DOUBLE": stepper.DOUBLE,
+    "SINGLE": stepper.SINGLE,
+    "INTERLEAVE": stepper.INTERLEAVE,
+    "MICROSTEP": stepper.MICROSTEP
+}
+
+
 class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPosition, IsDaemon):
     _kind = "adafruit-stepper-motor-hat"
 
@@ -16,18 +24,19 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         super().__init__(name, config, config_filepath)
         try:
             self.microsteps = config["microsteps"]
-            self.style = config["style"]
+            self._kit = MotorKit(
+                address=config["i2c_addr"],
+                steppers_microsteps=self.microsteps,
+            )
+            self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
+            self.style = styles[config["style"]]
+            self.logger.info(config["style"], self.style)
             if self.style in ["DOUBLE", "SINGLE"]:  # full steps only
                 self.step_size = self.microsteps
             elif self.style == "INTERLEAVE":  # half stepping
                 self.step_size = self.microsteps // 2
             elif self.style == "MICROSTEP":  # microstepping
                 self.step_size = 1
-            self._kit = MotorKit(
-                address=config["i2c_addr"],
-                steppers_microsteps=self.microsteps,
-            )
-            self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
             self.steps_per_unit = config["steps_per_unit"]
             self._units = config["units"]
             self._lock = asyncio.Lock()
@@ -52,6 +61,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
             self._stepper.onestep(direction=direction, style=self.style)
         except Exception as e:
             self.logger.error(e)
+        self.logger.info(self._stepper)
         steps += self.step_size if direction == stepper.FORWARD else -self.step_size
         self._state["position"] = self.to_units(steps)
         self.logger.debug(f"{self._state['position']}")
