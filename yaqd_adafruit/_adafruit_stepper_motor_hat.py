@@ -27,6 +27,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
                 address=config["i2c_addr"],
                 steppers_microsteps=self.microsteps,
             )
+            self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
             self.steps_per_unit = config["steps_per_unit"]
             self._units = config["units"]
             self._lock = asyncio.Lock()
