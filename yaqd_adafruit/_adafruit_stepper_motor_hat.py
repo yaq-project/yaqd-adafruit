@@ -21,7 +21,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
                 self.step_size = self.microsteps
             elif self.style == "INTERLEAVE":  # half stepping
                 self.step_size = self.microsteps // 2
-            elif self.style == "MICROSTEPS":  # microstepping
+            elif self.style == "MICROSTEP":  # microstepping
                 self.step_size = 1
             self._kit = MotorKit(
                 address=config["i2c_addr"],

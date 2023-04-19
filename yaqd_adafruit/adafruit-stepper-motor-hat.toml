@@ -19,7 +19,7 @@ fields = [{"name"="pin", "type"="int", "doc"="GPIO Pin"},
 [[types]]
 name = "step_style"
 type = "enum"
-symbols = ["DOUBLE", "SINGLE", "INTERLEAVE", "MICROSTEPS"]
+symbols = ["DOUBLE", "SINGLE", "INTERLEAVE", "MICROSTEP"]
 
 [config]
 
