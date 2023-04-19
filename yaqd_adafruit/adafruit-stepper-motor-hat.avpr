@@ -346,7 +346,7 @@
                 "DOUBLE",
                 "SINGLE",
                 "INTERLEAVE",
-                "MICROSTEPS"
+                "MICROSTEP"
             ],
             "type": "enum"
         },

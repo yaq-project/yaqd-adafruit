@@ -10,7 +10,7 @@ styles = {
     "DOUBLE": stepper.DOUBLE,
     "SINGLE": stepper.SINGLE,
     "INTERLEAVE": stepper.INTERLEAVE,
-    "MICROSTEP": stepper.MICROSTEP
+    "MICROSTEP": stepper.MICROSTEP,
 }
 
 
