@@ -22,32 +22,29 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         from adafruit_motorkit import MotorKit  # type: ignore
 
         super().__init__(name, config, config_filepath)
-        try:
-            self.microsteps = config["microsteps"]
-            self._kit = MotorKit(
-                address=config["i2c_addr"],
-                steppers_microsteps=self.microsteps,
+        self.microsteps = config["microsteps"]
+        self._kit = MotorKit(
+            address=config["i2c_addr"],
+            steppers_microsteps=self.microsteps,
+        )
+        self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
+        if config["style"] in ["DOUBLE", "SINGLE"]:  # full steps only
+            self.step_size = self.microsteps
+        elif config["style"] == "INTERLEAVE":  # half stepping
+            self.step_size = self.microsteps // 2
+        elif config["style"] == "MICROSTEP":  # microstepping
+            self.step_size = 1
+        self.style = styles[config["style"]]
+        self.steps_per_unit = config["steps_per_unit"]
+        self._units = config["units"]
+        self._lock = asyncio.Lock()
+        self._lower_pin = gpiozero.InputDevice(
+            config["lower_limit_switch"]["pin"], pull_up=True
+        )
+        if config.get("upper_limit_switch"):
+            self._upper_pin = gpiozero.InputDevice(
+                config["upper_limit_switch"]["pin"], pull_up=True
             )
-            self._stepper = getattr(self._kit, f"stepper{config['stepper_index']}")
-            if config["style"] in ["DOUBLE", "SINGLE"]:  # full steps only
-                self.step_size = self.microsteps
-            elif config["style"] == "INTERLEAVE":  # half stepping
-                self.step_size = self.microsteps // 2
-            elif config["style"] == "MICROSTEP":  # microstepping
-                self.step_size = 1
-            self.style = styles[config["style"]]
-            self.steps_per_unit = config["steps_per_unit"]
-            self._units = config["units"]
-            self._lock = asyncio.Lock()
-            self._lower_pin = gpiozero.InputDevice(
-                config["lower_limit_switch"]["pin"], pull_up=True
-            )
-            if config.get("upper_limit_switch"):
-                self._upper_pin = gpiozero.InputDevice(
-                    config["upper_limit_switch"]["pin"], pull_up=True
-                )
-        except Exception as e:
-            self.logger.error(e)
 
     async def _do_step(self, backward=False):
         steps = self.to_usteps(self._state["position"])
@@ -56,10 +53,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
             return
         elif direction == stepper.FORWARD and await self._get_upper_limit_switch():
             return
-        try:
-            self._stepper.onestep(direction=direction, style=self.style)
-        except Exception as e:
-            self.logger.error(e)
+        self._stepper.onestep(direction=direction, style=self.style)
         steps += self.step_size if direction == stepper.FORWARD else -self.step_size
         self._state["position"] = self.to_units(steps)
         self.logger.debug(f"{self._state['position']}")
