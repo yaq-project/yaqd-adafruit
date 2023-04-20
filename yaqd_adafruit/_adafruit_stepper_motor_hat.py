@@ -46,12 +46,12 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
                 config["upper_limit_switch"]["pin"], pull_up=True
             )
 
-    async def _do_step(self, backward=False):
+    def _do_step(self, backward=False):
         steps = self.to_usteps(self._state["position"])
         direction = stepper.BACKWARD if backward else stepper.FORWARD
-        if direction == stepper.BACKWARD and await self._get_lower_limit_switch():
+        if direction == stepper.BACKWARD and self._get_lower_limit_switch():
             return
-        elif direction == stepper.FORWARD and await self._get_upper_limit_switch():
+        elif direction == stepper.FORWARD and self._get_upper_limit_switch():
             return
         self._stepper.onestep(direction=direction, style=self.style)
         steps += self.step_size if direction == stepper.FORWARD else -self.step_size
@@ -68,11 +68,11 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         """for debugging purposes only"""
         self._stepper.release()
 
-    async def _get_lower_limit_switch(self):
+    def _get_lower_limit_switch(self):
         # TODO: invert
         return self._lower_pin.value
 
-    async def _get_upper_limit_switch(self):
+    def _get_upper_limit_switch(self):
         if not self._config.get("upper_limit_switch"):
             return False
         # TODO: invert
@@ -88,7 +88,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
             self._busy = True
             while True:
                 await asyncio.sleep(0)
-                await self._do_step(backward=True)
+                self._do_step(backward=True)
                 if self._state["position"] == prev_position:
                     break
                 prev_position = self._state["position"]
@@ -102,16 +102,14 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
     async def update_state(self):
         while True:
             async with self._lock:
-                while self.to_usteps(self._state["position"]) != self.to_usteps(
-                    self._state["destination"]
-                ):
+                while abs(self.to_usteps(self._state["position"] - self._state["destination"])) >= self.step_size:
+                    # delta_steps = self.to_usteps(self._state["position"] - self._state["destination"]) / self.step_size
                     self._busy = True
                     await asyncio.sleep(0)
-                    await self._do_step(
+                    self._do_step(
                         self.to_usteps(self._state["position"])
                         > self.to_usteps(self._state["destination"])
                     )
-
                 self._busy = False
             await self._busy_sig.wait()
 
