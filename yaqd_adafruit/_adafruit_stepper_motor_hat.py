@@ -38,9 +38,7 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
         self.steps_per_unit = config["steps_per_unit"]
         self._units = config["units"]
         self._lock = asyncio.Lock()
-        self._lower_pin = gpiozero.InputDevice(
-            config["lower_limit_switch"]["pin"], pull_up=True
-        )
+        self._lower_pin = gpiozero.InputDevice(config["lower_limit_switch"]["pin"], pull_up=True)
         if config.get("upper_limit_switch"):
             self._upper_pin = gpiozero.InputDevice(
                 config["upper_limit_switch"]["pin"], pull_up=True
@@ -102,7 +100,10 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
     async def update_state(self):
         while True:
             async with self._lock:
-                while abs(self.to_usteps(self._state["position"] - self._state["destination"])) >= self.step_size:
+                while (
+                    abs(self.to_usteps(self._state["position"] - self._state["destination"]))
+                    >= self.step_size
+                ):
                     # delta_steps = self.to_usteps(self._state["position"] - self._state["destination"]) / self.step_size
                     self._busy = True
                     await asyncio.sleep(0)
