@@ -62,10 +62,6 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
     def to_usteps(self, units):
         return round(units * self.steps_per_unit * self.microsteps)
 
-    def release(self):
-        """for debugging purposes only"""
-        self._stepper.release()
-
     def _get_lower_limit_switch(self):
         # TODO: invert
         return self._lower_pin.value
