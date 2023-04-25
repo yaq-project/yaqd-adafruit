@@ -59,6 +59,3 @@ default = "__null__"
 default = 0
 [state.destination]
 default = 0
-
-[messages]
-release.doc = "de-energize coils"
