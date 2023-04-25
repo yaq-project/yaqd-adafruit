@@ -100,7 +100,6 @@ class AdafruitStepperMotorHat(UsesI2C, UsesSerial, IsHomeable, HasLimits, HasPos
                     abs(self.to_usteps(self._state["position"] - self._state["destination"]))
                     >= self.step_size
                 ):
-                    # delta_steps = self.to_usteps(self._state["position"] - self._state["destination"]) / self.step_size
                     self._busy = True
                     await asyncio.sleep(0)
                     self._do_step(
