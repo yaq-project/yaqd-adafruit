@@ -1,0 +1,21 @@
+[shared-settings]
+microsteps = 8
+style = "DOUBLE"
+units = "mm"
+steps_per_unit = 1338.582677165
+
+[opa4_d1]
+port = 38000
+stepper_index = 2
+i2c_addr = 0x61
+
+[opa4_d1.lower_limit_switch]
+pin = 6
+
+[opa4_d2]
+port = 38001
+stepper_index = 1
+i2c_addr = 0x61
+
+[opa4_d2.lower_limit_switch]
+pin = 5
