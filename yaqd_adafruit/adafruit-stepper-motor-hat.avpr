@@ -131,7 +131,7 @@
     },
     "links": {
         "bugtracker": "https://github.com/yaq-project/yaqd-adafruit/-/issues",
-        "example-configs": "https://github.com/yaq-project/yaqd-adafruit/tree/main/example-yaq-configs",
+        "example-configs": "https://github.com/yaq-project/yaqd-adafruit/tree/main/example-yaq-configs/adafruit-stepper-motor-hat",
         "source": "https://github.com/yaq-project/yaqd-adafruit"
     },
     "messages": {
