@@ -131,6 +131,7 @@
     },
     "links": {
         "bugtracker": "https://github.com/yaq-project/yaqd-adafruit/-/issues",
+        "example-configs": "https://github.com/yaq-project/yaqd-adafruit/tree/main/example-yaq-configs",
         "source": "https://github.com/yaq-project/yaqd-adafruit"
     },
     "messages": {
