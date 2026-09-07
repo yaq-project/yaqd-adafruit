@@ -5,7 +5,6 @@ import gpiozero  # type: ignore
 from yaqd_core import UsesI2C, UsesSerial, HasLimits, HasPosition, IsHomeable, IsDaemon
 from adafruit_motor import stepper  # type: ignore
 
-
 styles = {
     "DOUBLE": stepper.DOUBLE,
     "SINGLE": stepper.SINGLE,
